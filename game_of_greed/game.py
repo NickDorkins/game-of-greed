@@ -19,7 +19,7 @@ class Game:
 
         self.round_num = 0
 
-        self._roller = roller or GameLogic.roll_dice
+        # self._roller =  GameLogic.roll_dice()
 
         print("Welcome to Game of Greed")
 
@@ -35,10 +35,27 @@ class Game:
     def decline_game(self):
         print("OK. Maybe another time")
 
+    # Application should allow user to set aside dice each roll
+    # Application should allow “banking” current score or rolling again.
+    # Application should keep track of total score
+    # Application should keep track of current round
+    
     def start_game(self):
-        # TODO: um, the game
-        pass
+        self.round_num += 1
+        self.current_die_rolled = 6
 
+        print(f"Starting round {self.round_num}")
+        print(f"Rolling {self.current_die_rolled} dice...")
+
+        display_tuple = list(GameLogic.roll_dice(self.current_die_rolled))
+
+        for  num in display_tuple:
+            str(num)
+        print(display_tuple)
+        display_dice = ' '.join(display_tuple)
+        print(f'*** {display_dice} ***')
+            
+           
 
 if __name__ == "__main__":
     game = Game()

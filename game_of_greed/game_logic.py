@@ -91,8 +91,7 @@ class GameLogic:
         return tuple(diceroll)
 
 
-test = GameLogic()
-print(test.roll_dice(6))
+
  
 
 
