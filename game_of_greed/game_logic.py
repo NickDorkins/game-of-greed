@@ -22,6 +22,7 @@ class GameLogic:
                    straight = False
             if straight == True:
                 return 1500
+           
         
         if len(count) == 3:
             pairs = True
@@ -29,9 +30,7 @@ class GameLogic:
                 if freq == 2:
                     return 1500
                 if freq != 2:
-                    return 500
-        
-        
+                    return 500                   
        
         all_scores = {
             (1, 1): 100,
@@ -40,6 +39,7 @@ class GameLogic:
             (1, 4): 2000,
             (1, 5): 3000,
             (1, 6): 4000,
+            (2, 1): 0,
             (2, 2): 0,
             (2, 3): 200,
             (2, 4): 400,
@@ -69,9 +69,11 @@ class GameLogic:
         } 
 
         for tup in count:
-            total_points = 0
-            scoring += all_scores[tup]     
+            if tup in all_scores:
+                scoring += all_scores[tup]         
         return scoring 
+
+        
 
      
 
