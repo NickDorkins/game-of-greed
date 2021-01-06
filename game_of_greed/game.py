@@ -1,4 +1,4 @@
-from game_of_greed.game_logic import GameLogic
+from game_of_greed.git staugame_logic import GameLogic
 from game_of_greed.banker import Banker
 
 
@@ -48,7 +48,8 @@ class Game:
         print(f"Rolling {self.current_die_rolled} dice...")
 
         display_tuple = GameLogic.roll_dice(self.current_die_rolled)
-        display_dice = ' '.join(str(num) for num in display_tuple)
+        #found the below solution on stackoverflow https://stackoverflow.com/questions/3590165/join-a-list-of-items-with-different-types-as-string-in-python
+        display_dice = ' '.join(str(num) for num in display_tuple) 
         print(f'*** {display_dice} ***')
             
            
