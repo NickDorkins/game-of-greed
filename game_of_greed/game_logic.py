@@ -3,11 +3,6 @@ import random
 
 
 class GameLogic:
-  
- 
-#  Calculate score (Static method)
-#  Inputs - Tuple
-#  Outputs - Integer (Score Value)
 
     @staticmethod
     def calculate_score(kept_dice):
@@ -70,14 +65,10 @@ class GameLogic:
 
         for tup in count:
             if tup in all_scores:
-                scoring += all_scores[tup]         
+                scoring += all_scores[tup]
+
+
         return scoring 
-
-        
-
-     
-
-
         
 
     @staticmethod

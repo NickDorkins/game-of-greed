@@ -47,12 +47,8 @@ class Game:
         print(f"Starting round {self.round_num}")
         print(f"Rolling {self.current_die_rolled} dice...")
 
-        display_tuple = list(GameLogic.roll_dice(self.current_die_rolled))
-
-        for  num in display_tuple:
-            str(num)
-        print(display_tuple)
-        display_dice = ' '.join(display_tuple)
+        display_tuple = GameLogic.roll_dice(self.current_die_rolled)
+        display_dice = ' '.join(str(num) for num in display_tuple)
         print(f'*** {display_dice} ***')
             
            
