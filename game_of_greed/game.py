@@ -51,26 +51,21 @@ class Game:
         print(f"Starting round {self.round_num}")
         print(f"Rolling {self.current_die_rolled} dice...")
 
-        display_tuple = GameLogic.roll_dice(self.current_die_rolled)
+        display_tuple = self._roller(self.current_die_rolled)
         #found the below solution on stackoverflow https://stackoverflow.com/questions/3590165/join-a-list-of-items-with-different-types-as-string-in-python
         display_dice = ' '.join(str(num) for num in display_tuple) 
         print(f'*** {display_dice} ***')
     
-   
-   
-        user_input = list(input("Enter dice to keep, or (q)uit: "))
-
-      
-               
-        if user_input == "q" or user_input == "quit":
-                    
-            print('Goodbye')    
+        user_input = input("Enter dice to keep, or (q)uit:\n> ")
+    
+        if user_input == "q":  
+            print(f'Thanks for playing. You earned {self.banker.balance} points')    
             sys.exit()
         else:
-             
-          
-             for num in range(len(user_input)):
+            user_input = list(user_input)
+            for num in range(len(user_input)):
                 user_input[num] = int(user_input[num]) 
+
         user_input = tuple(user_input)
         remaining =  self.current_die_rolled - len(user_input)
 
@@ -79,42 +74,53 @@ class Game:
         self.banker.shelf(scoreLogic)
         print(f"You have {self.banker.shelved} unbanked points and {remaining} dice remaining")
 
-        roll_bank_or_quit = input("(r)oll again, (b)ank your points or (q)uit: \n>")
+        roll_bank_or_quit = input("(r)oll again, (b)ank your points or (q)uit:\n> ")
 
-        if roll_bank_or_quit == "r" or "roll":
+        if roll_bank_or_quit == "r":
+           
            GameLogic.roll_dice(remaining)
 
-            print(f"Rolling {self.current_die_rolled} dice...")
+           print(f"Rolling {remaining} dice...")
 
-            display_tuple = GameLogic.roll_dice(self.current_die_rolled)
-            #found the below solution on stackoverflow https://stackoverflow.com/questions/3590165/join-a-list-of-items-with-different-types-as-string-in-python
-            display_dice = ' '.join(str(num) for num in display_tuple) 
-            print(f'*** {display_dice} ***')
+           display_tuple = GameLogic.roll_dice(remaining)
+
+           #found the below solution on stackoverflow https://stackoverflow.com/questions/3590165/join-a-list-of-items-with-different-types-as-string-in-python
+
+           display_dice = ' '.join(str(num) for num in display_tuple)
+
+           print(f'*** {display_dice} ***')
+
+           user_input = input("Enter dice to keep, or (q)uit:\n> ")
+
+           if user_input == 'q' or user_input == "quit":
+                print('Goodbye')    
+                sys.exit()
+           else:
+               user_input = list(user_input)
+               for num in range(len(user_input)):
+                   user_input[num] = int(user_input[num])
+
+           user_input = tuple(user_input)
+           remaining =  self.current_die_rolled - len(user_input)
+
+           scoreLogic = GameLogic.calculate_score(user_input)
+
+           self.banker.shelf(scoreLogic)
+           print(f"You have {self.banker.shelved} unbanked points and {remaining} dice remaining")
         
+        elif roll_bank_or_quit == "b":
+            shelf = self.banker.shelved
+            self.banker.bank()
 
-        
-    
+            print(f"You banked {shelf} points in round {self.round_num}")
 
-         
-           
+            print(f"Total score is {self.banker.balance} points")
 
-        
-        
+            self.start_game()
 
-
-    
-        
-
-        # elif user_input == "r" or user_input == "roll":
-        #     print(f' You have {self.banker.shelved} unbanked points and {self.banker.balance} dice remaining ')
-
-
-        
-           
-     
-
-
-            
+        elif user_input == "q" or user_input == "quit":
+            print(f'Thanks for playing. You earned {self.banker.balance} points')    
+            sys.exit() 
 
 
 if __name__ == "__main__":
