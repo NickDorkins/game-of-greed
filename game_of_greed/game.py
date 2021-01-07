@@ -1,5 +1,6 @@
-from game_of_greed.git staugame_logic import GameLogic
+from game_of_greed.game_logic import GameLogic
 from game_of_greed.banker import Banker
+import sys
 
 
 class Game:
@@ -10,6 +11,7 @@ class Game:
         self.banker = Banker()
         self.num_rounds = num_rounds
 
+
     def play(self, roller=None):
         """Entry point for playing (or declining) a game
         Args:
@@ -19,7 +21,7 @@ class Game:
 
         self.round_num = 0
 
-        # self._roller =  GameLogic.roll_dice()
+        self._roller = roller or GameLogic.roll_dice
 
         print("Welcome to Game of Greed")
 
@@ -31,6 +33,7 @@ class Game:
             self.start_game()
         else:
             self.decline_game()
+
 
     def decline_game(self):
         print("OK. Maybe another time")
@@ -44,6 +47,7 @@ class Game:
         self.round_num += 1
         self.current_die_rolled = 6
 
+
         print(f"Starting round {self.round_num}")
         print(f"Rolling {self.current_die_rolled} dice...")
 
@@ -51,8 +55,67 @@ class Game:
         #found the below solution on stackoverflow https://stackoverflow.com/questions/3590165/join-a-list-of-items-with-different-types-as-string-in-python
         display_dice = ' '.join(str(num) for num in display_tuple) 
         print(f'*** {display_dice} ***')
-            
+    
+   
+   
+        user_input = list(input("Enter dice to keep, or (q)uit: "))
+
+      
+               
+        if user_input == "q" or user_input == "quit":
+                    
+            print('Goodbye')    
+            sys.exit()
+        else:
+             
+          
+             for num in range(len(user_input)):
+                user_input[num] = int(user_input[num]) 
+        user_input = tuple(user_input)
+        remaining =  self.current_die_rolled - len(user_input)
+
+        scoreLogic = GameLogic.calculate_score(user_input)
+
+        self.banker.shelf(scoreLogic)
+        print(f"You have {self.banker.shelved} unbanked points and {remaining} dice remaining")
+
+        roll_bank_or_quit = input("(r)oll again, (b)ank your points or (q)uit: \n>")
+
+        if roll_bank_or_quit == "r" or "roll":
+           GameLogic.roll_dice(remaining)
+
+            print(f"Rolling {self.current_die_rolled} dice...")
+
+            display_tuple = GameLogic.roll_dice(self.current_die_rolled)
+            #found the below solution on stackoverflow https://stackoverflow.com/questions/3590165/join-a-list-of-items-with-different-types-as-string-in-python
+            display_dice = ' '.join(str(num) for num in display_tuple) 
+            print(f'*** {display_dice} ***')
+        
+
+        
+    
+
+         
            
+
+        
+        
+
+
+    
+        
+
+        # elif user_input == "r" or user_input == "roll":
+        #     print(f' You have {self.banker.shelved} unbanked points and {self.banker.balance} dice remaining ')
+
+
+        
+           
+     
+
+
+            
+
 
 if __name__ == "__main__":
     game = Game()
