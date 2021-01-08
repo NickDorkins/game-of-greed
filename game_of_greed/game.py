@@ -38,24 +38,39 @@ class Game:
     def decline_game(self):
         print("OK. Maybe another time")
 
-    # Application should allow user to set aside dice each roll
-    # Application should allow “banking” current score or rolling again.
-    # Application should keep track of total score
-    # Application should keep track of current round
-    
-    def start_game(self):
-        self.round_num += 1
-        self.current_die_rolled = 6
+     
+    def start_game(self,remaining_dice=6):
 
+        if not self.round_num:
+            self.round_num += 1
+            print(f"Starting round {self.round_num}")
+        
 
-        print(f"Starting round {self.round_num}")
-        print(f"Rolling {self.current_die_rolled} dice...")
+        print(f"Rolling {remaining_dice} dice...")
 
-        display_tuple = self._roller(self.current_die_rolled)
-        #found the below solution on stackoverflow https://stackoverflow.com/questions/3590165/join-a-list-of-items-with-different-types-as-string-in-python
-        display_dice = ' '.join(str(num) for num in display_tuple) 
+        display_tuple = self._roller(remaining_dice)
+
+        display_dice = ' '.join(str(num) for num in display_tuple)            
+
         print(f'*** {display_dice} ***')
-    
+
+        if not GameLogic.calculate_score(display_tuple):
+            print("****************************************")
+            print("**       Zilch!!! Round Over          **")
+            print("****************************************")
+
+            print(f"You banked 0 points in round {self.round_num}")
+
+            print(f"Total score is {self.banker.balance} points")
+
+            self.banker.clear_shelf()
+
+            self.round_num += 1
+            print(f"Starting round {self.round_num}")
+            self.start_game()
+
+        #found the below solution on stackoverflow https://stackoverflow.com/questions/3590165/join-a-list-of-items-with-different-types-as-string-in-python
+        
         user_input = input("Enter dice to keep, or (q)uit:\n> ")
     
         if user_input == "q":  
@@ -66,47 +81,24 @@ class Game:
             for num in range(len(user_input)):
                 user_input[num] = int(user_input[num]) 
 
-        user_input = tuple(user_input)
-        remaining =  self.current_die_rolled - len(user_input)
+            user_input = tuple(user_input)
+            remaining_dice =  remaining_dice - len(user_input)
 
         scoreLogic = GameLogic.calculate_score(user_input)
 
         self.banker.shelf(scoreLogic)
-        print(f"You have {self.banker.shelved} unbanked points and {remaining} dice remaining")
+
+        if not remaining_dice:
+            print('** HOT ROLL **')
+            self.start_game()
+
+        print(f"You have {self.banker.shelved} unbanked points and {remaining_dice} dice remaining")
 
         roll_bank_or_quit = input("(r)oll again, (b)ank your points or (q)uit:\n> ")
 
         if roll_bank_or_quit == "r":
-           
-           GameLogic.roll_dice(remaining)
 
-           print(f"Rolling {remaining} dice...")
-
-           display_tuple = GameLogic.roll_dice(remaining)
-
-           #found the below solution on stackoverflow https://stackoverflow.com/questions/3590165/join-a-list-of-items-with-different-types-as-string-in-python
-
-           display_dice = ' '.join(str(num) for num in display_tuple)
-
-           print(f'*** {display_dice} ***')
-
-           user_input = input("Enter dice to keep, or (q)uit:\n> ")
-
-           if user_input == 'q' or user_input == "quit":
-                print('Goodbye')    
-                sys.exit()
-           else:
-               user_input = list(user_input)
-               for num in range(len(user_input)):
-                   user_input[num] = int(user_input[num])
-
-           user_input = tuple(user_input)
-           remaining =  self.current_die_rolled - len(user_input)
-
-           scoreLogic = GameLogic.calculate_score(user_input)
-
-           self.banker.shelf(scoreLogic)
-           print(f"You have {self.banker.shelved} unbanked points and {remaining} dice remaining")
+            self.start_game(remaining_dice)
         
         elif roll_bank_or_quit == "b":
             shelf = self.banker.shelved
@@ -116,9 +108,11 @@ class Game:
 
             print(f"Total score is {self.banker.balance} points")
 
+            self.round_num += 1
+            print(f"Starting round {self.round_num}")
             self.start_game()
 
-        elif user_input == "q" or user_input == "quit":
+        elif user_input == "q":
             print(f'Thanks for playing. You earned {self.banker.balance} points')    
             sys.exit() 
 

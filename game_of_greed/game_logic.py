@@ -74,10 +74,9 @@ class GameLogic:
     @staticmethod
     def roll_dice(num_die):
         diceroll = []
-        for die in range(1, num_die + 1):
+        for die in range(num_die):
             add_score = random.randint(1, 6) 
             diceroll.append(add_score)
-            # print(add_score)
     
         return tuple(diceroll)
 
