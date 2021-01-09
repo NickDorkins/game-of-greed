@@ -3,11 +3,6 @@ import random
 
 
 class GameLogic:
-  
- 
-#  Calculate score (Static method)
-#  Inputs - Tuple
-#  Outputs - Integer (Score Value)
 
     @staticmethod
     def calculate_score(kept_dice):
@@ -70,29 +65,23 @@ class GameLogic:
 
         for tup in count:
             if tup in all_scores:
-                scoring += all_scores[tup]         
+                scoring += all_scores[tup]
+
+
         return scoring 
-
-        
-
-     
-
-
         
 
     @staticmethod
     def roll_dice(num_die):
         diceroll = []
-        for die in range(1, num_die + 1):
+        for die in range(num_die):
             add_score = random.randint(1, 6) 
             diceroll.append(add_score)
-            # print(add_score)
     
         return tuple(diceroll)
 
 
-test = GameLogic()
-print(test.roll_dice(6))
+
  
 
 

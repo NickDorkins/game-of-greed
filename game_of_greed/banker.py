@@ -12,8 +12,6 @@ class Banker:
     def shelf(self, points):
         self.shelved += points 
         
-    
-   
 
 # Shelf_Bank Method
 # input - integer (Output total of Shelf_Method)
