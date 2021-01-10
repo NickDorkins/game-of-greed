@@ -81,8 +81,38 @@ class GameLogic:
         return tuple(diceroll)
 
 
+    @staticmethod
+    def get_scorers(dice):
+        dicelist = []
+        for num in range(len(dice)):
+            if dice[num] == 1:
+                dicelist.append(dice[num])
+            elif dice[num] == 5:
+                dicelist.append(dice[num])
 
- 
+        return tuple(dicelist)
+
+
+    def validate_keepers(roll, keepers):
+        if len(roll) < len(keepers):
+            return False
+
+        roll = list(roll)
+        for num in range(len(keepers)):
+            if len(roll) == 0:
+                break
+            elif keepers[num] in roll:
+                keeper_index = roll.index(keepers[num])
+                roll.pop(keeper_index)
+            elif keepers[num] not in roll:
+                return False
+                
+
+        return True        
+
+
+
+
 
 
 
